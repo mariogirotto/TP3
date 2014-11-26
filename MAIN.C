@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <string.h> hfgfhgfhf
+#include <string.h>
 #include "types.h"
 
 #define FIELD_SIZE 30
