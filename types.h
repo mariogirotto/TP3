@@ -11,3 +11,7 @@ typedef enum {
 	ERROR_CLOSING_FILE
 } status_t;
 
+typedef enum {
+		FALSE = 0,
+		TRUE = 1
+		} bool_t;
