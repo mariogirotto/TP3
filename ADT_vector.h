@@ -2,10 +2,6 @@
 
 #define INIT_CHOP 20
 
-typedef enum {
-		TRUE,
-		FALSE
-		} bool_t;
 		
 typedef struct {
 		size_t size;
