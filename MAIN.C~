@@ -7,7 +7,7 @@
 #define OFFSET -128
 
 typedef struct {
-	char title[FIELD_SIZE], artist[FIELD_SIZE], album[FIELD_SIZE];
+	char title[FIELD_SIZE+1], artist[FIELD_SIZE+1], album[FIELD_SIZE+1];
 	genre_t genre;
 } track_t;
 
@@ -21,27 +21,16 @@ int main (int argc, char *argv[])
 	if((fi=fopen(argv[1], "rb"))==NULL) return 1;
 
 	fseek(fi, OFFSET, SEEK_END);
-/*	fread(aux, TAG_SIZE, 1, fi);
+	fread(aux, TAG_SIZE, 1, fi);
 	fread(track.title, FIELD_SIZE, 1, fi);
 	fread(track.artist, FIELD_SIZE, 1, fi);
 	fread(track.album, FIELD_SIZE, 1, fi);
-	fread(aux, FIELD_SIZE+4, 1, fi);
-	fread(&track.genre, 1, 1, fi); */
+	fread(aux, FIELD_SIZE+5, 1, fi);
+	fread(&track.genre, 1, 1, fi); 
 
-	fread(aux, 128, 1, fi);
+	track.title[FIELD_SIZE]=track.artist[FIELD_SIZE]=track.album[FIELD_SIZE]='\0';
 
-	for(i=0; i<127; i++)
-		{
-			if(aux[i]=='\0') aux[i]='-';
-		}
-
-	aux[126]='\0';
-
-	track.title[FIELD_SIZE-1]=track.artist[FIELD_SIZE-1]=track.album[FIELD_SIZE-1]='\0';
-
-	printf("%s%i\n", aux, aux[127]);
-
-	/*printf("%s\n\t%s\n\t\t%s\n%i\n", track.artist, track.title, track.album, track.genre);*/
+	printf("%s\n\t%s\n\t\t%s\n%i\n", track.artist, track.title, track.album, track.genre);
 
 	fclose(fi);
 	return 0;
