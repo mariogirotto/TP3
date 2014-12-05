@@ -18,7 +18,7 @@ status_t ADT_vector_new (ADT_vector_t ** p)
 	}
 	(*p)->alloc_size = INIT_CHOP; 
 	(*p)->size = 0;
-	(*p)->destructor = NULL;
+	/*(*p)->destructor = NULL;*/
 	return OK;
 }
 
@@ -46,30 +46,30 @@ status_t ADT_vector_delete (ADT_vector_t ** p, status_t (*destructor)(void**))
 }
 */
 
-ADT_vector_append_element (ADT_vector_t ** p, void * new_element, status_t (*destructor)(void**))
+status_t ADT_vector_append_element (ADT_vector_t * p, void * new_element, status_t (*destructor)(void**))
 {
 
 	void ** aux;
 
-	if (p == NULL, new_element == NULL) return ERROR_NULL_POINTER;
+	if (p == NULL || new_element == NULL) return ERROR_NULL_POINTER;
 
 	if (p->elements == NULL)
 	{
 		if ((p->elements = (void **) malloc (INIT_CHOP * sizeof (void*)))==NULL)
-			return ERROR_MEMORY
+			return ERROR_MEMORY;
 		p -> alloc_size = INIT_CHOP;
 	}
-	elif (p->alloc_size == p->size)
+	else if (p->alloc_size == p->size)
 	{
 		if((aux = (void**) realloc (p->elements, (p->alloc_size + CHOP_SIZE) * sizeof (void*))) == NULL)
 		{
-			ADT_vector_delete (p, destructor);
+			ADT_vector_delete (&p, destructor);
 			return ERROR_MEMORY;
 		}
 		p->alloc_size += CHOP_SIZE;
 		p->elements = aux;
 	}
-	p->elements[p->size++] =  new-element;
+	p->elements[p->size++] =  new_element;
 	return OK;
 }
 			 	
@@ -88,11 +88,29 @@ size_t ADT_vector_get_size (ADT_vector_t *p)
 
 status_t ADT_print_vector (ADT_vector_t *p, status_t (*printer)(FILE *, void*), FILE* fo)
 {
+	int i;
+	status_t st;	
+	
 	if (p == NULL || printer == NULL || fo == NULL) return ERROR_NULL_POINTER;
 	
 	for(i=0; i<(p->size); i++)
 		if ((st=(*printer)(fo, &(p->elements[i]))) != OK) return st;
-		fputc('/n', fo);
+		fputc('\n', fo);
 	
 	return OK;
+}
+
+int main (void)
+{
+	ADT_vector_t * p;	
+
+	if((ADT_vector_new(&p))!=OK)
+	{
+		puts("falla ADT_vector_new");
+		return 1;
+	}
+	
+	printf("%i", (int)p->size);	
+		
+	return 0;
 }
