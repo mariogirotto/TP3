@@ -22,7 +22,7 @@ status_t ADT_vector_new (ADT_vector_t ** p)
 	return OK;
 }
 
-status_t ADT_vector_delete (ADT_vector_t ** p, status_t (*destructor)(void*))
+status_t ADT_vector_delete (ADT_vector_t ** p, status_t (*destructor)(void**))
 {
 	size_t i;
 	status_t st;
@@ -30,7 +30,7 @@ status_t ADT_vector_delete (ADT_vector_t ** p, status_t (*destructor)(void*))
 	if(p == NULL||destructor ==NULL) return ERROR_NULL_POINTER;
 	
 	for(i=0; i<((*p)->size); i++)
-		if ((st=(*destructor)(&((*p)->elements[i]))) != OK) return st; /**((*p)->destructor))*/
+		if ((st=(*destructor)(&((*p)->elements[i]))) != OK) return st;
 	free ((*p) -> elements);
 	(*p) -> elements = NULL;
 	free (*p);
@@ -46,7 +46,33 @@ status_t ADT_vector_delete (ADT_vector_t ** p, status_t (*destructor)(void*))
 }
 */
 
+ADT_vector_append_element (ADT_vector_t ** p, void * new_element, status_t (*destructor)(void**))
+{
 
+	void ** aux;
+
+	if (p == NULL, new_element == NULL) return ERROR_NULL_POINTER;
+
+	if (p->elements == NULL)
+	{
+		if ((p->elements = (void **) malloc (INIT_CHOP * sizeof (void*)))==NULL)
+			return ERROR_MEMORY
+		p -> alloc_size = INIT_CHOP;
+	}
+	elif (p->alloc_size == p->size)
+	{
+		if((aux = (void**) realloc (p->elements, (p->alloc_size + CHOP_SIZE) * sizeof (void*))) == NULL)
+		{
+			ADT_vector_delete (p, destructor);
+			return ERROR_MEMORY;
+		}
+		p->alloc_size += CHOP_SIZE;
+		p->elements = aux;
+	}
+	p->elements[p->size++] =  new-element;
+	return OK;
+}
+			 	
 
 bool_t ADT_vector_is_empty (ADT_vector_t *p)
 {
@@ -60,18 +86,7 @@ size_t ADT_vector_get_size (ADT_vector_t *p)
 	return(p->size);
 }
 
-status_t ADT_print_vector_as_csv (ADT_vector_t *p, status_t (*printer)(FILE *, void*), FILE* fo)
-{
-	if (p == NULL || printer == NULL || fo == NULL) return ERROR_NULL_POINTER;
-	
-	for(i=0; i<(p->size); i++)
-		if ((st=(*printer)(fo, &(p->elements[i]))) != OK) return st;
-		fputc('/n', fo);
-	
-	return OK;
-}
-
-status_t ADT_print_vector_as_plain_text (ADT_vector_t *p, status_t (*printer)(FILE *, void*), FILE* fo)
+status_t ADT_print_vector (ADT_vector_t *p, status_t (*printer)(FILE *, void*), FILE* fo)
 {
 	if (p == NULL || printer == NULL || fo == NULL) return ERROR_NULL_POINTER;
 	
