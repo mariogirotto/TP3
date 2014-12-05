@@ -1,6 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define TITLE_FIELD_SIZE 30
+#define AUTHOR_FIELD_SIZE 30
+#define TAG_SIZE 3
+#define OFFSET -128
+#define MSG_UNKNOWN_GENRE "Genero desconocido"
+
+typedef struct {
+	char *title, *author;
+	genre_t genre;
+} ADT_track_t;
+
 typedef enum {
 	BLUES=0,
 	CLASSIC_ROCK=1,
