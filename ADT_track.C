@@ -1,11 +1,37 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "types.h"
 #include "ADT_track.h"
 
-status_t ADT_new_track (FILE* fi, ADT_track_t *track)
+status_t ADT_new_track (FILE* fi, ADT_track_t **track)
 {
-	
+	char author[AUTHOR_FIELD_SIZE+1], title[TITLE_FIELD_SIZE+1];
+
+	if(fi==NULL || track==NULL) return ERROR_NULL_POINTER;
+	if((*track=(ADT_track_t*)malloc(sizeof(ADT_track_t)))==NULL) return ERROR_MEMORY;
+
+	fseek(fi, TITLE_OFFSET, SEEK_END);
+	fread(title, TITLE_FIELD_SIZE, 1, fi);
+	fread(author, AUTHOR_FIELD_SIZE, 1, fi);
+	fseek(fi, GENRE_OFFSET, SEEK_END);
+	fread(&((*track)->genre), 1, 1, fi);
+	author[AUTHOR_FIELD_SIZE]=title[TITLE_FIELD_SIZE]='\0';
+	if(((*track)->author=strdup(author))==NULL) 
+	{
+		free((*track));
+		(*track)=NULL;
+		return ERROR_MEMORY;
+	}
+	if(((*track)->title=strdup(title))==NULL)
+	{
+		free((*track)->author);
+		free((*track));
+		(*track)=NULL;
+		return ERROR_MEMORY;
+	}
+	return OK;
+}
 
 string ADT_genre_to_string (genre_t genre)
 {
@@ -466,23 +492,13 @@ string ADT_genre_to_string (genre_t genre)
 int main (int argc, char *argv[])
 {
 	FILE *fi;
-	char input, aux[128];
-	size_t i;
-	track_t track;
+	ADT_track_t *track;
 
 	if((fi=fopen(argv[1], "rb"))==NULL) return 1;
+	
+	ADT_new_track(fi, &track);
 
-	fseek(fi, OFFSET, SEEK_END);
-	fread(aux, TAG_SIZE, 1, fi);
-	fread(track.title, FIELD_SIZE, 1, fi);
-	fread(track.artist, FIELD_SIZE, 1, fi);
-	fread(track.album, FIELD_SIZE, 1, fi);
-	fread(aux, FIELD_SIZE+5, 1, fi);
-	fread(&track.genre, 1, 1, fi); 
-
-	track.title[FIELD_SIZE]=track.artist[FIELD_SIZE]=track.album[FIELD_SIZE]='\0';
-
-	printf("%s\n\t%s\n\t\t%s\n%i\n", track.artist, track.title, track.album, track.genre);
+	printf("%s\n\t%s\n\t\t%s\n", track->author, track->title, ADT_genre_to_string(track->genre));
 
 	fclose(fi);
 	return 0;

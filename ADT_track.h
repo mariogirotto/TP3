@@ -4,13 +4,9 @@
 #define TITLE_FIELD_SIZE 30
 #define AUTHOR_FIELD_SIZE 30
 #define TAG_SIZE 3
-#define OFFSET -128
+#define TITLE_OFFSET -125
+#define GENRE_OFFSET -1
 #define MSG_UNKNOWN_GENRE "Genero desconocido"
-
-typedef struct {
-	char *title, *author;
-	genre_t genre;
-} ADT_track_t;
 
 typedef enum {
 	BLUES=0,
@@ -163,3 +159,8 @@ typedef enum {
 	SYNTHPOP=147,
 	ROCK_POP=148
 } genre_t;
+
+typedef struct {
+	char *title, *author;
+	genre_t genre;
+} ADT_track_t;
