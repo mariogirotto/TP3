@@ -1,6 +1,6 @@
 /*************************prototipos*************************/
-status_t	ADT_new_track (FILE*, ADT_track_t*);
-status_t	ADT_destroy_track (void*);
+status_t	ADT_new_track (FILE*, ADT_track_t**);
+status_t	ADT_destroy_track (void**);
 status_t	ADT_get_author (const ADT_track_t*, string*);
 status_t	ADT_get_title (const ADT_track_t*, string*);
 status_t	ADT_get_genre (const ADT_track_t*, genre_t*);
