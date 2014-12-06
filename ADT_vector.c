@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "types.h"
 #include "ADT_vector.h"
+#include "ADT_vector_prototypes.h"
 
 status_t ADT_vector_new (ADT_vector_t ** p)
 {

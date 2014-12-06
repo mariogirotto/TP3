@@ -5,6 +5,10 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include "types.h"
+#include "ADT_vector.h"
+#include "ADT_track.h"
+#include "ADT_vector_prototypes.h"
+#include "ADT_track_prototypes.h"
 
 #define MAX_STRING  200
 #define FILES_CHOP  10
@@ -61,23 +65,23 @@ int main (int argc, char * argv[])
 	{
 		if((fi=fopen(files[i], "rb"))==NULL) return ERROR_OPENING_FILE;
 		if((st=ADT_new_track(fi, &track))!=OK) return st;
-		if((st=ADT_vector_append_element(&track_vector, track, status_t ADT_destroy_track(void**)))!=OK) return st;
+		if((st=ADT_vector_append_element(&track_vector, track, ADT_destroy_track(void**)))!=OK) return st;
 	}
 
 	if(config.sort==SORT_BY_NAME)
 	{
-		qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), int ADT_cmp_title(void*, void*));
+		qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_title(void*, void*));
 	}
 	else if(config.sort==SORT_BY_ARTIST)
 	{
-		qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), int ADT_cmp_author(void*, void*));
+		qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_author(void*, void*));
 	}
 	else if(config.sort==SORT_BY_GENRE)
 	{
-		qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), int ADT_cmp_genre(void*, void*));
+		qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_genre(void*, void*));
 	}
-	if((st=ADT_print_vector(track_vector, status_t	ADT_print_track_as_string (FILE*, void*), stdout))!=OK) return st;
-	if((st=ADT_vector_delete (&track_vector, status_t ADT_destroy_track (void**)))!=OK) return st;
+	if((st=ADT_print_vector(track_vector, ADT_print_track_as_string (FILE*, void*), stdout))!=OK) return st;
+	if((st=ADT_vector_delete (&track_vector, ADT_destroy_track (void**)))!=OK) return st;
 	delete_string_array(files,L);
 	return 0;
 	
