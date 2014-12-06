@@ -46,6 +46,7 @@ int main (int argc, char * argv[])
 	char *dir_name;			/* directorio a explorar */
 	size_t  L, i;
 	string *files;
+	char aux[MAX_STRING];
 	config_t config;
 	status_t st;
 	FILE *fi;
@@ -63,7 +64,11 @@ int main (int argc, char * argv[])
 	if((st=get_dir_files(dir_name, &L, &files))!=OK) return st;
 	for (i=0; i<L; i++)
 	{
-		if((fi=fopen(files[i], "rb"))==NULL) return ERROR_OPENING_FILE;
+		aux[0]='\0';
+		strcat(aux, config.path);
+		strcat(aux, "/");
+		strcat(aux, files[i]);
+		if((fi=fopen(aux, "rb"))==NULL) return ERROR_OPENING_FILE;
 		if((st=ADT_new_track(fi, &track))!=OK) return st;
 		if((st=ADT_vector_append_element(track_vector, track, ADT_destroy_track))!=OK) return st;
 		fclose(fi);
