@@ -89,15 +89,16 @@ size_t ADT_vector_get_size (ADT_vector_t *p)
 
 status_t ADT_print_vector (ADT_vector_t *p, status_t (*printer)(FILE *, void*), FILE* fo)
 {
-	int i;
+	size_t i;
 	status_t st;	
 	
 	if (p == NULL || printer == NULL || fo == NULL) return ERROR_NULL_POINTER;
 	
 	for(i=0; i<(p->size); i++)
-		if ((st=(*printer)(fo, &(p->elements[i]))) != OK) return st;
+	{
+		if ((st=(*printer)(fo, (p->elements)[i])) != OK) return st;
 		fputc('\n', fo);
-	
+	}
 	return OK;
 }
 

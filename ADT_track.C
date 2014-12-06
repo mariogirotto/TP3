@@ -115,12 +115,9 @@ status_t	ADT_print_track_as_csv (FILE *fo, void *track)
 
 status_t	ADT_print_track_as_string (FILE *fo, void *track)
 {
-	ADT_track_t *aux;
-
 	if(fo==NULL || track==NULL) return ERROR_NULL_POINTER;
 
-	aux=(ADT_track_t*)track;
-	fprintf(fo, "%s\t%s\t%s", aux->title, aux->author, ADT_genre_to_string(aux->genre));
+	fprintf(fo, "%s\t%s\t%s", ((ADT_track_t*)track)->title, ((ADT_track_t*)track)->author, ADT_genre_to_string(((ADT_track_t*)track)->genre));
 	return OK;
 }
 
