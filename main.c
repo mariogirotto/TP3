@@ -77,13 +77,13 @@ int main (int argc, char * argv[])
 	switch(config.sort)
 	{
 		case SORT_BY_NAME:
-				qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_title);
+				qsort(track_vector->elements, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_title);
 				break;
 		case SORT_BY_ARTIST:
-				qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_author);
+				qsort(track_vector->elements, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_author);
 				break;
 		case SORT_BY_GENRE:
-				qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_genre);
+				qsort(track_vector->elements, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_genre);
 				break;
 		default: return 1;
 	}

@@ -3,7 +3,7 @@
 
 #define TITLE_FIELD_SIZE 30
 #define AUTHOR_FIELD_SIZE 30
-#define CSV_SEPARATOR ';'
+#define CSV_SEPARATOR '|'
 #define TAG_SIZE 3
 #define TITLE_OFFSET -125
 #define GENRE_OFFSET -1

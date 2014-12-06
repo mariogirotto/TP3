@@ -88,7 +88,7 @@ int		ADT_cmp_title (const void *title1, const void *title2)
 		
 	titl1=(string)title1;
 	titl2=(string)title2;
-	return strcmp(titl1, titl2);
+	return strcmp(strlwr(titl1), strlwr(titl2));
 }
 
 int		ADT_cmp_genre (const void *genre1, const void *genre2)
