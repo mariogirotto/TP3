@@ -12,6 +12,7 @@ typedef enum {
 	ERROR_INVALID_SORT_TIPE,
 	ERROR_INVALID_FORMAT,
 	ERROR_OPENING_FILE,
+	ERROR_OPENING_DIRECTORY,
 	ERROR_CLOSING_FILE
 } status_t;
 
@@ -32,7 +33,7 @@ typedef enum {
 	} sort_t;
 
 typedef struct {
-	format_t format;
+	format_t fmt;
 	sort_t sort;
 	string path;
 	} config_t;
