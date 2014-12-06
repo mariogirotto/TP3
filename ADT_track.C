@@ -71,7 +71,7 @@ status_t	ADT_get_genre (const ADT_track_t *track, genre_t *genre)
 	return OK;
 }
 
-int		ADT_cmp_author (void *author1, void *author2)
+int		ADT_cmp_author (const void *author1, const void *author2)
 /* Esta función no recibe punteros nulos */
 {
 	string auth1, auth2;
@@ -81,7 +81,7 @@ int		ADT_cmp_author (void *author1, void *author2)
 	return strcmp(auth1, auth2);
 }
 
-int		ADT_cmp_title (void *title1, void *title2)
+int		ADT_cmp_title (const void *title1, const void *title2)
 /* Esta función no recibe punteros nulos */
 {
 	string titl1, titl2;
@@ -91,7 +91,7 @@ int		ADT_cmp_title (void *title1, void *title2)
 	return strcmp(titl1, titl2);
 }
 
-int		ADT_cmp_genre (void *genre1, void *genre2)
+int		ADT_cmp_genre (const void *genre1, const void *genre2)
 /* Esta función no recibe punteros nulos */
 {
 	genre_t *gen1, *gen2;

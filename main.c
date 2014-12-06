@@ -65,23 +65,23 @@ int main (int argc, char * argv[])
 	{
 		if((fi=fopen(files[i], "rb"))==NULL) return ERROR_OPENING_FILE;
 		if((st=ADT_new_track(fi, &track))!=OK) return st;
-		if((st=ADT_vector_append_element(&track_vector, track, ADT_destroy_track(void**)))!=OK) return st;
+		if((st=ADT_vector_append_element(track_vector, track, ADT_destroy_track))!=OK) return st;
 	}
 
 	if(config.sort==SORT_BY_NAME)
 	{
-		qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_title(void*, void*));
+		qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_title);
 	}
 	else if(config.sort==SORT_BY_ARTIST)
 	{
-		qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_author(void*, void*));
+		qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_author);
 	}
 	else if(config.sort==SORT_BY_GENRE)
 	{
-		qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_genre(void*, void*));
+		qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_genre);
 	}
-	if((st=ADT_print_vector(track_vector, ADT_print_track_as_string (FILE*, void*), stdout))!=OK) return st;
-	if((st=ADT_vector_delete (&track_vector, ADT_destroy_track (void**)))!=OK) return st;
+	if((st=ADT_print_vector(track_vector, ADT_print_track_as_string, stdout))!=OK) return st;
+	if((st=ADT_vector_delete (&track_vector, ADT_destroy_track))!=OK) return st;
 	delete_string_array(files,L);
 	return 0;
 	
