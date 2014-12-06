@@ -66,19 +66,21 @@ int main (int argc, char * argv[])
 		if((fi=fopen(files[i], "rb"))==NULL) return ERROR_OPENING_FILE;
 		if((st=ADT_new_track(fi, &track))!=OK) return st;
 		if((st=ADT_vector_append_element(track_vector, track, ADT_destroy_track))!=OK) return st;
+		fclose(fi);
 	}
 
-	if(config.sort==SORT_BY_NAME)
+	switch(config.sort)
 	{
-		qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_title);
-	}
-	else if(config.sort==SORT_BY_ARTIST)
-	{
-		qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_author);
-	}
-	else if(config.sort==SORT_BY_GENRE)
-	{
-		qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_genre);
+		case SORT_BY_NAME:
+				qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_title);
+				break;
+		case SORT_BY_ARTIST:
+				qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_author);
+				break;
+		case SORT_BY_GENRE:
+				qsort(track_vector, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_genre);
+				break;
+		default: return 1;
 	}
 	if((st=ADT_print_vector(track_vector, ADT_print_track_as_string, stdout))!=OK) return st;
 	if((st=ADT_vector_delete (&track_vector, ADT_destroy_track))!=OK) return st;
