@@ -56,7 +56,7 @@ status_t ADT_vector_append_element (ADT_vector_t * p, void * new_element, status
 	if (p->elements == NULL)
 	{
 		if ((p->elements = (void **) malloc (INIT_CHOP * sizeof (void*)))==NULL)
-			return ERROR_MEMORY;
+			return ERROR_MEMORY;	
 		p -> alloc_size = INIT_CHOP;
 	}
 	else if (p->alloc_size == p->size)
@@ -100,17 +100,4 @@ status_t ADT_print_vector (ADT_vector_t *p, status_t (*printer)(FILE *, void*), 
 	return OK;
 }
 
-int main (void)
-{
-	ADT_vector_t * p;	
 
-	if((ADT_vector_new(&p))!=OK)
-	{
-		puts("falla ADT_vector_new");
-		return 1;
-	}
-	
-	printf("%i", (int)p->size);	
-		
-	return 0;
-}

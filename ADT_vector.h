@@ -5,8 +5,8 @@
 		
 typedef struct {
 		size_t size;
-		void * elements;
+		void ** elements;
 		size_t alloc_size;
-		/*typedef status_t (*destructor_t)(void *) destructor;*/
 		} ADT_vector_t;
+
 
