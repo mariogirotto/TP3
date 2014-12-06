@@ -3,6 +3,7 @@
 #include <string.h>
 #include "types.h"
 #include "ADT_track.h"
+#include "ADT_track_prototypes.h"
 
 status_t ADT_new_track (FILE* fi, ADT_track_t **track)
 {
@@ -32,6 +33,97 @@ status_t ADT_new_track (FILE* fi, ADT_track_t **track)
 	}
 	return OK;
 }
+
+status_t ADT_destroy_track (void **track)
+{
+	ADT_track_t **aux;
+	if(track==NULL) return ERROR_NULL_POINTER;
+
+	aux=(ADT_track_t**)track;
+	free((*aux)->author);
+	free((*aux)->title);
+	free(*aux);
+	*aux=NULL;
+	return OK;
+}
+
+status_t	ADT_get_author (const ADT_track_t *track, string *author)
+{
+	if(track==NULL || author==NULL) return ERROR_NULL_POINTER;
+	
+	*author=track->author;
+	return OK;
+}
+
+status_t	ADT_get_title (const ADT_track_t *track, string *title)
+{
+	if(track==NULL || title==NULL) return ERROR_NULL_POINTER;
+	
+	*title=track->title;
+	return OK;
+}
+
+status_t	ADT_get_genre (const ADT_track_t *track, genre_t *genre)
+{
+	if(track==NULL || genre==NULL) return ERROR_NULL_POINTER;
+
+	*genre=track->genre;
+	return OK;
+}
+
+int		ADT_cmp_author (void *author1, void *author2)
+/* Esta función no recibe punteros nulos */
+{
+	string auth1, auth2;
+		
+	auth1=(string)author1;
+	auth2=(string)author2;
+	return strcmp(auth1, auth2);
+}
+
+int		ADT_cmp_title (void *title1, void *title2)
+/* Esta función no recibe punteros nulos */
+{
+	string titl1, titl2;
+		
+	titl1=(string)title1;
+	titl2=(string)title2;
+	return strcmp(titl1, titl2);
+}
+
+int		ADT_cmp_genre (void *genre1, void *genre2)
+/* Esta función no recibe punteros nulos */
+{
+	genre_t *gen1, *gen2;
+			
+	gen1=(genre_t*)genre1;
+	gen2=(genre_t*)genre2;
+	return strcmp(ADT_genre_to_string(*gen1), ADT_genre_to_string(*gen2));
+}
+
+
+status_t	ADT_print_track_as_csv (FILE *fo, void *track)
+{
+	ADT_track_t *aux;
+
+	if(fo==NULL || track==NULL) return ERROR_NULL_POINTER;
+
+	aux=(ADT_track_t*)track;
+	fprintf(fo, "%s%c%s%c%s", aux->title, CSV_SEPARATOR, aux->author, CSV_SEPARATOR, ADT_genre_to_string(aux->genre));
+	return OK;
+}
+
+status_t	ADT_print_track_as_string (FILE *fo, void *track)
+{
+	ADT_track_t *aux;
+
+	if(fo==NULL || track==NULL) return ERROR_NULL_POINTER;
+
+	aux=(ADT_track_t*)track;
+	fprintf(fo, "%s\t%s\t%s", aux->title, aux->author, ADT_genre_to_string(aux->genre));
+	return OK;
+}
+
 
 string ADT_genre_to_string (genre_t genre)
 {
@@ -489,17 +581,3 @@ string ADT_genre_to_string (genre_t genre)
 	}
 }
 
-int main (int argc, char *argv[])
-{
-	FILE *fi;
-	ADT_track_t *track;
-
-	if((fi=fopen(argv[1], "rb"))==NULL) return 1;
-	
-	ADT_new_track(fi, &track);
-
-	printf("%s\n\t%s\n\t\t%s\n", track->author, track->title, ADT_genre_to_string(track->genre));
-
-	fclose(fi);
-	return 0;
-}

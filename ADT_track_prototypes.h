@@ -9,6 +9,6 @@ int		ADT_cmp_title (void*, void*);
 int		ADT_cmp_genre (void*, void*);
 status_t	ADT_print_track_as_csv (FILE*, void*);
 status_t	ADT_print_track_as_string (FILE*, void*);
-string		ADT_genre_to_string (genre_t);
+string	ADT_genre_to_string (genre_t);
 /*************************prototipos*************************/
 
