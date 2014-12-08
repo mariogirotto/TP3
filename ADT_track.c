@@ -163,11 +163,11 @@ status_t ADT_new_track (FILE* fi, ADT_track_t **track)
 	if(fi==NULL || track==NULL) return ERROR_NULL_POINTER;
 	if((*track=(ADT_track_t*)malloc(sizeof(ADT_track_t)))==NULL) return ERROR_MEMORY;
 
-	fseek(fi, TITLE_OFFSET, SEEK_END);
-	fread(title, TITLE_FIELD_SIZE, 1, fi);
-	fread(author, AUTHOR_FIELD_SIZE, 1, fi);
-	fseek(fi, GENRE_OFFSET, SEEK_END);
-	fread(&((*track)->genre), 1, 1, fi);
+	if(fseek(fi, TITLE_OFFSET, SEEK_END)) return ERROR_READING_FILE;
+	if(fread(title, TITLE_FIELD_SIZE, 1, fi)!=1) return ERROR_READING_FILE;
+	if(fread(author, AUTHOR_FIELD_SIZE, 1, fi)!=1) return ERROR_READING_FILE;
+	if(fseek(fi, GENRE_OFFSET, SEEK_END)) return ERROR_READING_FILE;
+	if(fread(&((*track)->genre), 1, 1, fi)!=1) return ERROR_READING_FILE;
 	author[AUTHOR_FIELD_SIZE]=title[TITLE_FIELD_SIZE]='\0';
 	if(((*track)->author=strdup(author))==NULL) 
 	{
