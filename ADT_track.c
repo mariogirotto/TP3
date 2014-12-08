@@ -72,19 +72,19 @@ status_t	ADT_get_genre (const ADT_track_t *track, genre_t *genre)
 }
 
 int		ADT_cmp_author (const void *track1, const void *track2)
-/* Esta función no recibe punteros nulos */
+/* Esta funciÃ³n no recibe punteros nulos */
 {
 	return strcmp((*(ADT_track_t**)track1)->author, (*(ADT_track_t**)track2)->author);
 }
 
 int		ADT_cmp_title (const void *track1, const void *track2)
-/* Esta función no recibe punteros nulos */
+/* Esta funciÃ³n no recibe punteros nulos */
 {
 	return strcmp((*(ADT_track_t**)track1)->title, (*(ADT_track_t**)track2)->title);
 }
 
 int		ADT_cmp_genre (const void *track1, const void *track2)
-/* Esta función no recibe punteros nulos */
+/* Esta funciÃ³n no recibe punteros nulos */
 {
 	return strcmp(ADT_genre_to_string((*(ADT_track_t**)track1)->genre), ADT_genre_to_string((*(ADT_track_t**)track2)->genre));
 }
@@ -112,7 +112,7 @@ status_t	ADT_print_track_as_string (FILE *fo, void *track)
 
 string ADT_genre_to_string (genre_t genre)
 {
-	/* Los nombres de los géneros responden a la tabla extendida de winamp de 148 géneros. */
+	/* Los nombres de los gÃ©neros responden a la tabla extendida de winamp de 148 gÃ©neros. */
 	switch(genre)
 	{
 	case 0: return "Blues";
