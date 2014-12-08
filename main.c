@@ -22,6 +22,7 @@ status_t 	validate_arguments (int , char **, config_t*);
 int main (int argc, char * argv[])
 {
 	int (*cmp[3])(const void*, const void*);
+	status_t (*printer[2])(FILE*, void*);
 	char *dir_name;			/* directorio a explorar */
 	size_t  L, i;
 	string *files;
@@ -31,6 +32,9 @@ int main (int argc, char * argv[])
 	FILE *fi;
 	ADT_vector_t *track_vector;
 	ADT_track_t *track;
+
+	printer[0]=ADT_print_track_as_csv;
+	printer[1]=ADT_print_track_as_string;
 	
 	cmp[0]=ADT_cmp_title;
 	cmp[1]=ADT_cmp_author;
@@ -59,7 +63,7 @@ int main (int argc, char * argv[])
 
 	qsort(track_vector->elements, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), cmp[config.sort]);
 
-	if((st=ADT_print_vector(track_vector, ADT_print_track_as_csv, stdout))!=OK) return st;
+	if((st=ADT_print_vector(track_vector, printer[config.fmt], stdout))!=OK) return st;
 	if((st=ADT_vector_delete (&track_vector, ADT_destroy_track))!=OK) return st;
 
 	delete_string_array(files,L);
