@@ -21,6 +21,7 @@ status_t 	validate_arguments (int , char **, config_t*);
 
 int main (int argc, char * argv[])
 {
+	int (*cmp[3])(const void*, const void*);
 	char *dir_name;			/* directorio a explorar */
 	size_t  L, i;
 	string *files;
@@ -31,6 +32,10 @@ int main (int argc, char * argv[])
 	ADT_vector_t *track_vector;
 	ADT_track_t *track;
 	
+	cmp[0]=ADT_cmp_title;
+	cmp[1]=ADT_cmp_author;
+	cmp[2]=ADT_cmp_genre;
+
 	if (validate_arguments(argc, argv, &config) != OK)
 	{
 		fprintf(stderr, "%s\n", MSG_INVALID_INPUT);
@@ -44,7 +49,7 @@ int main (int argc, char * argv[])
 	{
 		aux[0]='\0';
 		strcat(aux, config.path);
-		strcat(aux, "/");
+		strcat(aux, "\\");
 		strcat(aux, files[i]);
 		if((fi=fopen(aux, "rb"))==NULL) return ERROR_OPENING_FILE;
 		if((st=ADT_new_track(fi, &track))!=OK) return st;
@@ -52,19 +57,7 @@ int main (int argc, char * argv[])
 		fclose(fi);
 	}
 
-	switch(config.sort)
-	{
-		case SORT_BY_NAME:
-				qsort(track_vector->elements, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_title);
-				break;
-		case SORT_BY_ARTIST:
-				qsort(track_vector->elements, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_author);
-				break;
-		case SORT_BY_GENRE:
-				qsort(track_vector->elements, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), ADT_cmp_genre);
-				break;
-		default: return 1;
-	}
+	qsort(track_vector->elements, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), cmp[config.sort]);
 
 	if((st=ADT_print_vector(track_vector, ADT_print_track_as_csv, stdout))!=OK) return st;
 	if((st=ADT_vector_delete (&track_vector, ADT_destroy_track))!=OK) return st;
