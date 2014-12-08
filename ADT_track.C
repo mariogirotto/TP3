@@ -71,34 +71,22 @@ status_t	ADT_get_genre (const ADT_track_t *track, genre_t *genre)
 	return OK;
 }
 
-int		ADT_cmp_author (const void *author1, const void *author2)
+int		ADT_cmp_author (const void *track1, const void *track2)
 /* Esta función no recibe punteros nulos */
 {
-	string auth1, auth2;
-		
-	auth1=(string)author1;
-	auth2=(string)author2;
-	return strcmp(auth1, auth2);
+	return strcmp((*(ADT_track_t**)track1)->author, (*(ADT_track_t**)track2)->author);
 }
 
-int		ADT_cmp_title (const void *title1, const void *title2)
+int		ADT_cmp_title (const void *track1, const void *track2)
 /* Esta función no recibe punteros nulos */
 {
-	string titl1, titl2;
-		
-	titl1=(string)title1;
-	titl2=(string)title2;
-	return strcmp(strlwr(titl1), strlwr(titl2));
+	return strcmp((*(ADT_track_t**)track1)->title, (*(ADT_track_t**)track2)->title);
 }
 
-int		ADT_cmp_genre (const void *genre1, const void *genre2)
+int		ADT_cmp_genre (const void *track1, const void *track2)
 /* Esta función no recibe punteros nulos */
 {
-	genre_t *gen1, *gen2;
-			
-	gen1=(genre_t*)genre1;
-	gen2=(genre_t*)genre2;
-	return strcmp(ADT_genre_to_string(*gen1), ADT_genre_to_string(*gen2));
+	return strcmp(ADT_genre_to_string((*(ADT_track_t**)track2)->genre), ADT_genre_to_string((*(ADT_track_t**)track2)->genre));
 }
 
 
