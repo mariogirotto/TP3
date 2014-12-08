@@ -86,7 +86,7 @@ int		ADT_cmp_title (const void *track1, const void *track2)
 int		ADT_cmp_genre (const void *track1, const void *track2)
 /* Esta función no recibe punteros nulos */
 {
-	return strcmp(ADT_genre_to_string((*(ADT_track_t**)track2)->genre), ADT_genre_to_string((*(ADT_track_t**)track2)->genre));
+	return strcmp(ADT_genre_to_string((*(ADT_track_t**)track1)->genre), ADT_genre_to_string((*(ADT_track_t**)track2)->genre));
 }
 
 
