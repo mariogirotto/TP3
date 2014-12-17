@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include "types.h"
-#include "functions.h"
+#include "mp3_explorer.h"
 
 /* ///////////////////// Prototipos ////////////////////////// */
 status_t 	get_dir_files (string, size_t *, string**);

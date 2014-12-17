@@ -102,4 +102,9 @@ status_t ADT_print_vector (ADT_vector_t *p, status_t (*printer)(FILE *, void*), 
 	return OK;
 }
 
-
+status_t ADT_sort_vector (void *array, size_t l, size_t size, int (*cmp)(const void *, const void *))
+{
+	if (array==NULL || cmp==NULL) return ERROR_NULL_POINTER;
+	qsort (array, l, size, cmp);
+	return OK;
+}

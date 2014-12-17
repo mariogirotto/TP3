@@ -5,13 +5,23 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include "types.h"
-#include "functions.h"
+#include "mp3_explorer.h"
 #include "ADT_vector.h"
 #include "ADT_track.h"
 #include "ADT_vector_prototypes.h"
 #include "ADT_track_prototypes.h"
 
 #define MSG_INVALID_INPUT "Su ingreso no fue válido"
+
+int (*cmp[CMP_FUNCTIONS_QTY])(const void*, const void*)={
+	ADT_cmp_title, 
+	ADT_cmp_author,
+	ADT_cmp_genre};
+
+status_t (*printer[PRINT_FUNCTIONS_QTY])(FILE*, void*)={
+	ADT_print_track_as_csv,
+	ADT_print_track_as_string};
+
 
 /* ///////////////////// Prototipos ////////////////////////// */
 status_t 	get_dir_files (string, size_t *, string**);
@@ -21,8 +31,6 @@ status_t 	validate_arguments (int , char **, config_t*);
 
 int main (int argc, char * argv[])
 {
-	int (*cmp[3])(const void*, const void*);
-	status_t (*printer[2])(FILE*, void*);
 	char *dir_name;			/* directorio a explorar */
 	size_t  L, i;
 	string *files;
@@ -32,13 +40,6 @@ int main (int argc, char * argv[])
 	FILE *fi;
 	ADT_vector_t *track_vector;
 	ADT_track_t *track;
-
-	printer[0]=ADT_print_track_as_csv;
-	printer[1]=ADT_print_track_as_string;
-	
-	cmp[0]=ADT_cmp_title;
-	cmp[1]=ADT_cmp_author;
-	cmp[2]=ADT_cmp_genre;
 
 	if (validate_arguments(argc, argv, &config) != OK)
 	{
@@ -61,7 +62,7 @@ int main (int argc, char * argv[])
 		fclose(fi);
 	}
 
-	qsort(track_vector->elements, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), cmp[config.sort]);
+	if((st=ADT_sort_vector(track_vector->elements, ADT_vector_get_size(track_vector), sizeof(ADT_track_t*), cmp[config.sort]))!=OK) return st;
 
 	if((st=ADT_print_vector(track_vector, printer[config.fmt], stdout))!=OK) return st;
 	if((st=ADT_vector_delete (&track_vector, ADT_destroy_track))!=OK) return st;

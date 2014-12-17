@@ -19,3 +19,6 @@
 #define ARG_SORT_BY_NAME "name"
 #define ARG_SORT_BY_ARTIST "artist"
 #define ARG_SORT_BY_GENRE "genre"
+
+#define CMP_FUNCTIONS_QTY 3
+#define PRINT_FUNCTIONS_QTY 2
